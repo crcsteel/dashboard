@@ -3,26 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purchase Dashboard</title>
+  <title>Organization Purchase</title>
 	<!-- Icon & Fonts -->
 	<link rel="icon" href="CRC_LogoEN.jpg" type="image/jpeg">
 	<link rel="apple-touch-icon" href="../img/CRC_LogoEN.jpg">
 	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
+
+  <style>
+
+.org-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible; /* ให้ container เห็นการขยาย */
+}
+
+.level {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 5px 0;
+  overflow: visible;
+}
+
+.person {
+  width: 350px;
+  background-color: #fff;
+  border: 2px solid #007BFF;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+  text-align: center;
+  min-width: 150px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  overflow: visible;
+  position: relative;
+  cursor: pointer;
+  transform-origin: center center; /* ให้ขยายจากกึ่งกลางตัวเอง */
+  z-index: 1;
+}
+
+.person:hover {
+  transform: scale(1.5);
+  z-index: 20;
+}
+
+.person h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.person p {
+  margin: 5px 0 0;
+  color: #555;
+  font-size: 10px;
+}
+
+.connector {
+  width: 2px;
+  background-color: #007BFF;
+  height: 30px;
+}
+
+.profile {
+  position: relative;
+  overflow: visible;
+}
+
+.profile img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+</style>
 </head>
 <body>
 	<!-- SIDEBAR -->
 	<div id="sidebar"></div>
 	<!-- SIDEBAR -->
   <section id="content">
-    <nav>
-      <h1>Purchase Home</h1>
-      <div class="profile"><img src="img/CRC_LogoEN.jpg" alt="Logo"></div>
-      <div class="toggle-sidebar"><i class="bx bx-menu"></i></div>
-    </nav>
+		<nav>
+			<form action="#">
+				<div class="form-group">
+					<h1 class="title">Organization Charts</h1>
+				</div>
+			</form>
+			<span class="divider"></span>
+			<div class="profile">
+				<img src="https://crcsteel.co.th/upload-img/CRC_steel/logo_CRC_vdo-01_1665974907.png" alt="Logo">
+			</div>
+		</nav>
     <main>
-      <h2>Welcome</h2>
-      <p>ยินดีต้อนรับสู่ Purchase Dashboard</p>
+      <div class="org-chart">
+  
+  <div class="level">
+    <div class="person">
+      <div class="profile">
+				<img id="MyImage1"  alt="ราเชณ">			
+			</div>
+      <h3>นายราเชณ ธนเตชเกียรติ</h3>
+      <p>ผู้อำนวยการฝ่ายจัดซื้อ</p>
+      <p>ผู้อำนวยการ</p>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <div class="level">
+    <div class="person">
+      <div class="profile">
+				<img id="MyImage2"  alt="พิกุน">			
+			</div>
+      <h3>นางพิกุน เย็นเสมอ</h3>
+      <p>ผู้จัดการฝ่ายจัดซื้อ</p>
+      <p>ผู้จัดการ</p>
+    </div>
+  </div>
+
+  <div class="connector"></div>
+
+  <div class="level">
+    <div class="person">
+      <div class="profile">
+				<img id="MyImage3"  alt="นิภาวรรณ">			
+			</div>
+      <h3>นางสาวนิภาวรรณ เที่ยงวงษ์</h3>
+      <p>หัวหน้าแผนกจัดซื้อ</p>
+      <p>หัวหน้าแผนก</p>
+    </div>
+  
+  </div>
+  
+ <div class="connector"></div> 
+
+  <div class="level">
+    <div class="person">
+      <div class="profile">
+				<img id="MyImage4" class="img-fluid" alt="จิรายุส">
+      </div>	
+      <h3>นายจิรายุส แก่นอินทร์</h3>
+      <p>จนท.วางแผนการจัดซื้อและวิเคราะห์ข้อมูล</p>
+      <p>เจ้าหน้าที่อาวุโส</p>
+    </div>
+   <div class="person">
+    <div class="profile">
+				<img id="MyImage5"  alt="โคมแก้ว">			
+			</div>
+      <h3>นางสาวโคมแก้ว พิมพ์สอน</h3>
+      <p>เจ้าหน้าทีจัดซื้อ</p>
+      <p>เจ้าหน้าที่</p>
+    </div>
+  </div>
+</div>
     </main>
   </section>
 
@@ -35,11 +173,12 @@
 <script src="inventoryout.js"></script>
 <script src="salesandbase.js"></script>
 <script src="salesdaily.js"></script>
-  <script>
-    fetch("sidebar.html")
+
+<script>
+    fetch("../sidebar.html")
       .then(res => res.text())
       .then(html => { document.getElementById("sidebar").innerHTML = html; })
       .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
-  </script>
+</script>
 </body>
 </html>
