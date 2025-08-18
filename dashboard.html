@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- Icon & Fonts -->
+
+	<link rel="icon" href="CRC_LogoEN.jpg" type="image/jpeg">
+	<link rel="apple-touch-icon" href="../img/CRC_LogoEN.jpg">
+	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+	<title>Inventory Report</title>
+
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>	
+	<!-- SIDEBAR -->
+    <div id="sidebar"></div>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<form action="#">
+				<div class="form-group">
+					<h1 class="title">Inventory Report</h1>
+				</div>
+			</form>
+			<span class="divider"></span>
+			<div class="profile">
+				<img src="https://crcsteel.co.th/upload-img/CRC_steel/logo_CRC_vdo-01_1665974907.png" alt="Logo">
+			</div>
+			<!-- ปุ่ม toggle sidebar -->
+			<div class="toggle-sidebar"><i class='bx bx-menu'></i></div>
+		</nav>
+
+		<!-- MAIN -->
+		<main>
+			<ul class="breadcrumbs">
+				<li><a href="../index.html">Home</a></li>
+				<li class="divider">/</li>
+				<li><a href="#" class="active">Dashboard</a></li>
+			</ul>
+
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>มูลค่าสต๊อกคงคลัง (ล้านบาท)</h3></div>
+					<div class="chart" id="inventory-chart"></div>
+				</div>
+				<div class="content-data">
+					<div class="head"><h3>มูลค่าการสั่งซื้อ (ล้านบาท)</h3></div>
+					<div class="chart" id="po-chart"></div>
+				</div>
+			</div>
+
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>สต๊อกคงคลัง (ตัน)</h3></div>
+					<div class="chart" id="group-bar-chart"></div>
+				</div>
+			</div>
+
+      		<div class="data">
+        		<div class="content-data">
+          			<div class="head"><h3>สต๊อกคงคลัง (มูลค่า/บาท)</h3></div>
+          			<div class="stock-data">
+            			<table id="table-stock-value"></table>
+          			</div>
+        		</div>
+
+        		<div class="content-data">
+          			<div class="head"><h3>สต๊อกคงคลัง (น้ำหนัก/ตัน)</h3></div>
+          			<div class="stock-data">
+            			<table id="table-stock-weight"></table>
+          			</div>
+        		</div>
+
+        		<div class="content-data">
+          			<div class="head"><h3>สต๊อกค้างรับ (มูลค่า/บาท)</h3></div>
+          			<div class="stock-data">
+            			<table id="table-stock-pending"></table>
+          			</div>
+        		</div>
+      		</div>
+
+			<div class="data">
+        		<div class="content-data">
+          			<div class="head"><h3>เบทราคา (บาท/กก.)</h3></div>
+          			<div class="stock-data">
+            			<table id="table-base-price"></table>
+          			</div>
+        		</div>
+
+				<div class="content-data">
+					<div class="head"><h3>สต๊อกคงคลัง (น้ำหนัก/ตัน)</h3></div>
+					<div class="chart" id="stock-chart"></div>
+				</div>
+			</div>
+		</main>
+	</section>
+
+ <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- JavaScript -->
+<script src="script.js"></script>
+<script src="base.js"></script>
+<script src="inventory.js"></script>
+<script src="inventoryout.js"></script>
+<script src="salesandbase.js"></script>
+<script src="salesdaily.js"></script>
+  
+
+
+  <script>
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => { document.getElementById("sidebar").innerHTML = html; })
+      .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
+  </script>
+</body>
+</html>

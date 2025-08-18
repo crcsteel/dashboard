@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+	<!-- Icon & Fonts -->
+	<link rel="icon" href="CRC_LogoEN.jpg" type="image/jpeg">
+	<link rel="apple-touch-icon" href="../img/CRC_LogoEN.jpg">
+	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+	<title>Inventory Out</title>
+
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>	
+	<!-- SIDEBAR -->
+	<div id="sidebar"></div>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<form action="#">
+				<div class="form-group">
+					<h1 class="title">Inventory Out Report</h1>
+				</div>
+			</form>
+			<span class="divider"></span>
+			<div class="profile">
+				<img src="https://crcsteel.co.th/upload-img/CRC_steel/logo_CRC_vdo-01_1665974907.png" alt="Logo">
+			</div>
+			<!-- ปุ่ม toggle sidebar -->
+			<div class="toggle-sidebar"><i class='bx bx-menu'></i></div>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>น้ำหนักขายออก (ตัน)</h3></div>
+					<div class="stock-data" id="inventory-out-ton-chart"></div>
+				</div>
+				<div class="content-data">
+					<div class="head"><h3>มูลค่าขายออก (บาท)</h3></div>
+					<div class="chart" id="inventory-out-bath-chart"></div>
+				</div>
+			</div>
+
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>ขายออก GI (ตัน)</h3></div>
+					<div class="stock-data" id="inventory-out-gi-chart"></div>
+				</div>
+				<div class="content-data">
+					<div class="head"><h3>ขายออก RBDB (ตัน)</h3></div>
+					<div class="chart" id="inventory-out-rbdb-chart"></div>
+				</div>
+			</div>
+
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>ขายออก Backsteel (ตัน)</h3></div>
+					<div class="stock-data" id="inventory-out-backsteel-chart"></div>
+				</div>
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+ <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- JavaScript -->
+<script src="script.js"></script>
+<script src="base.js"></script>
+<script src="inventory.js"></script>
+<script src="inventoryout.js"></script>
+<script src="salesandbase.js"></script>
+<script src="salesdaily.js"></script>
+  <script>
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => { document.getElementById("sidebar").innerHTML = html; })
+      .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
+  </script>
+</body>
+</html>

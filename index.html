@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Dashboard</title>
+	<!-- Icon & Fonts -->
+	<link rel="icon" href="CRC_LogoEN.jpg" type="image/jpeg">
+	<link rel="apple-touch-icon" href="../img/CRC_LogoEN.jpg">
+	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<!-- SIDEBAR -->
+	<div id="sidebar"></div>
+	<!-- SIDEBAR -->
+  <section id="content">
+    <nav>
+      <h1>Purchase Home</h1>
+      <div class="profile"><img src="img/CRC_LogoEN.jpg" alt="Logo"></div>
+      <div class="toggle-sidebar"><i class="bx bx-menu"></i></div>
+    </nav>
+    <main>
+      <h2>Welcome</h2>
+      <p>ยินดีต้อนรับสู่ Purchase Dashboard</p>
+    </main>
+  </section>
+
+	<!-- CONTENT -->
+ <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- JavaScript -->
+<script src="script.js"></script>
+<script src="base.js"></script>
+<script src="inventory.js"></script>
+<script src="inventoryout.js"></script>
+<script src="salesandbase.js"></script>
+<script src="salesdaily.js"></script>
+  <script>
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => { document.getElementById("sidebar").innerHTML = html; })
+      .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
+  </script>
+</body>
+</html>
