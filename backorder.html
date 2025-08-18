@@ -64,18 +64,11 @@
 <script src="inventoryout.js"></script>
 <script src="salesandbase.js"></script>
 <script src="salesdaily.js"></script>
-  <script>
-    // โหลด Sidebar
+<script>
     fetch("sidebar.html")
       .then(res => res.text())
       .then(html => { document.getElementById("sidebar").innerHTML = html; })
       .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
-
-    // ซ่อน Loader เมื่อ iframe โหลดเสร็จ
-    const reportFrame = document.getElementById("reportFrame");
-    reportFrame.onload = () => {
-      document.getElementById("iframeLoader").style.display = "none";
-    };
-  </script>
+</script>
 </body>
 </html>
