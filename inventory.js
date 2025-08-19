@@ -113,6 +113,7 @@ function renderPOChart(months, year1, year2, year3, year4) {
 }
 
 // ---- Group Bar ----
+// ---- Group Bar ----
 async function fetchGroupData() {
   try {
     const res = await fetch(API_URL_INVENTORY);
@@ -132,7 +133,8 @@ async function fetchGroupData() {
           group: groupName,
           Surin: surin,
           Nangrong: nangrong,
-          DetUdom: detUdom
+          DetUdom: detUdom,
+          Total: surin + nangrong + detUdom   // ✅ รวมทั้ง 3 สาขา
         });
       }
     });
@@ -144,24 +146,45 @@ async function fetchGroupData() {
 }
 
 function renderGroupBarChart(stockData) {
+  const annotations = stockData.map(d => {
+    return {
+      x: d.group,
+      y: Math.max(d.Surin, d.Nangrong, d.DetUdom) + 5, // ยก label ขึ้นเหนือบาร์สูงสุดเล็กน้อย
+      label: {
+        text: `รวม: ${d.Total.toFixed(2)}`,
+        style: {
+          fontSize: '12px',
+          fontWeight: 'bold',
+          background: '#ffa500',
+          color: '#000'
+        }
+      }
+    };
+  });
+
   const options = {
     chart: { type: 'bar', height: 500 },
-    plotOptions: { bar: { columnWidth: '96%' } },
+    plotOptions: { bar: { columnWidth: '90%' } },
     series: [
-      { name: 'Surin', data: stockData.map(d => parseFloat(d.Surin.toFixed(2))) },
-      { name: 'Nangrong', data: stockData.map(d => parseFloat(d.Nangrong.toFixed(2))) },
-      { name: 'Det Udom', data: stockData.map(d => parseFloat(d.DetUdom.toFixed(2))) }
+      { name: 'สุรินทร์', data: stockData.map(d => parseFloat(d.Surin.toFixed(2))) },
+      { name: 'นางรอง', data: stockData.map(d => parseFloat(d.Nangrong.toFixed(2))) },
+      { name: 'เดชอุดม', data: stockData.map(d => parseFloat(d.DetUdom.toFixed(2))) }
     ],
     colors: ["#0080ff", "#ff0000", "#06c000"],
     xaxis: { categories: stockData.map(d => d.group) },
     dataLabels: {
       enabled: true,
-      formatter: val => val.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}),
+      formatter: val => val.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}),
       style: { fontSize: '10px', colors: ['#fff'] }
-    }
+    },
+    annotations: { points: annotations },  // ✅ ใช้ points แทน texts
+    legend: { position: 'top', horizontalAlign: 'center' }
   };
+
   new ApexCharts(document.querySelector("#group-bar-chart"), options).render();
 }
+
+
 
 // ---- Stock ----
 async function fetchStockData() {
