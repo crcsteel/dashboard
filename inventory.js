@@ -2,27 +2,6 @@
 // Inventory Dashboard
 // =======================
 
-// ---- Helper ----
-function parseValue(cell) {
-  if (!cell || !cell.v) return null;
-  let val = cell.v.toString().replace(' MB',''); 
-  val = parseFloat(val);
-  if (isNaN(val)) return null;
-  return val / 10000000;   // แปลงเป็นล้านบาท
-}
-
-function formatNumber(num) {
-  return Number(num).toLocaleString('en-US', { 
-    minimumFractionDigits: 2, 
-    maximumFractionDigits: 2 
-  });
-}
-
-function clearChart(selector) {
-  const el = document.querySelector(selector);
-  if (el) el.innerHTML = "";
-}
-
 // ---- Inventory ----
 async function fetchInventoryData() {
   try {
@@ -31,9 +10,17 @@ async function fetchInventoryData() {
     const json = JSON.parse(text.substring(47, text.length - 2));
 
     const months = [], year1 = [], year2 = [], year3 = [], year4 = [];
+
+    function parseValue(cell) {
+      if (!cell || !cell.v) return null;
+      let val = cell.v.toString().replace(' MB','');
+      val = parseFloat(val);
+      if (isNaN(val)) return null;
+      return val / 1000000; // แปลงเป็นล้านบาท
+    }
+
     json.table.rows.forEach(row => {
       const monthName = row.c[0]?.v || '';
-
       const val1 = parseValue(row.c[1]);
       const val2 = parseValue(row.c[2]);
       const val3 = parseValue(row.c[3]);
@@ -41,14 +28,13 @@ async function fetchInventoryData() {
 
       if (val1 !== null || val2 !== null || val3 !== null || val4 !== null) {
         months.push(monthName);
-        year1.push(val1 !== null ? +val1.toFixed(2) : null);
-        year2.push(val2 !== null ? +val2.toFixed(2) : null);
-        year3.push(val3 !== null ? +val3.toFixed(2) : null);
-        year4.push(val4 !== null ? +val4.toFixed(2) : null);
+        year1.push(val1 !== null ? parseFloat(val1.toFixed(2)) : null);
+        year2.push(val2 !== null ? parseFloat(val2.toFixed(2)) : null);
+        year3.push(val3 !== null ? parseFloat(val3.toFixed(2)) : null);
+        year4.push(val4 !== null ? parseFloat(val4.toFixed(2)) : null);
       }
     });
 
-    clearChart("#inventory-chart");
     renderInventoryChart(months, year1, year2, year3, year4);
   } catch (err) {
     console.error("โหลดข้อมูล Inventory ไม่สำเร็จ:", err);
@@ -79,24 +65,31 @@ async function fetchPOData() {
     const json = JSON.parse(text.substring(47, text.length - 2));
 
     const months = [], year1 = [], year2 = [], year3 = [], year4 = [];
+
+    function parseValue(cell) {
+      if (!cell || !cell.v) return null;
+      let val = cell.v.toString().replace(' MB','');
+      val = parseFloat(val);
+      if (isNaN(val)) return null;
+      return val;
+    }
+
     json.table.rows.forEach(row => {
       const monthName = row.c[0]?.v || '';
-
-      const val1 = parseValue(row.c[1]);
-      const val2 = parseValue(row.c[2]);
-      const val3 = parseValue(row.c[3]);
-      const val4 = parseValue(row.c[4]);
+      const val1 = parseValue(row.c[6]);
+      const val2 = parseValue(row.c[7]);
+      const val3 = parseValue(row.c[8]);
+      const val4 = parseValue(row.c[9]);
 
       if (val1 !== null || val2 !== null || val3 !== null || val4 !== null) {
         months.push(monthName);
-        year1.push(val1 !== null ? +val1.toFixed(2) : null);
-        year2.push(val2 !== null ? +val2.toFixed(2) : null);
-        year3.push(val3 !== null ? +val3.toFixed(2) : null);
-        year4.push(val4 !== null ? +val4.toFixed(2) : null);
+        year1.push(val1 !== null ? parseFloat(val1.toFixed(2)) : null);
+        year2.push(val2 !== null ? parseFloat(val2.toFixed(2)) : null);
+        year3.push(val3 !== null ? parseFloat(val3.toFixed(2)) : null);
+        year4.push(val4 !== null ? parseFloat(val4.toFixed(2)) : null);
       }
     });
 
-    clearChart("#po-chart");
     renderPOChart(months, year1, year2, year3, year4);
   } catch (err) {
     console.error("โหลดข้อมูล PO ไม่สำเร็จ:", err);
@@ -127,6 +120,7 @@ async function fetchGroupData() {
     const json = JSON.parse(text.substring(47, text.length - 2));
 
     const stockData = [];
+
     json.table.rows.forEach(row => {
       const groupName = row.c[11]?.v || '';
       const surin = parseFloat(row.c[12]?.v || 0);
@@ -143,10 +137,9 @@ async function fetchGroupData() {
       }
     });
 
-    clearChart("#group-bar-chart");
     renderGroupBarChart(stockData);
   } catch (err) {
-    console.error("โหลดข้อมูล Group Bar ไม่สำเร็จ:", err);
+    console.error("โหลดข้อมูลไม่สำเร็จ:", err);
   }
 }
 
@@ -155,9 +148,9 @@ function renderGroupBarChart(stockData) {
     chart: { type: 'bar', height: 500 },
     plotOptions: { bar: { columnWidth: '96%' } },
     series: [
-      { name: 'Surin', data: stockData.map(d => d.Surin ? +d.Surin.toFixed(2) : 0) },
-      { name: 'Nangrong', data: stockData.map(d => d.Nangrong ? +d.Nangrong.toFixed(2) : 0) },
-      { name: 'Det Udom', data: stockData.map(d => d.DetUdom ? +d.DetUdom.toFixed(2) : 0) }
+      { name: 'Surin', data: stockData.map(d => parseFloat(d.Surin.toFixed(2))) },
+      { name: 'Nangrong', data: stockData.map(d => parseFloat(d.Nangrong.toFixed(2))) },
+      { name: 'Det Udom', data: stockData.map(d => parseFloat(d.DetUdom.toFixed(2))) }
     ],
     colors: ["#0080ff", "#ff0000", "#06c000"],
     xaxis: { categories: stockData.map(d => d.group) },
@@ -178,22 +171,29 @@ async function fetchStockData() {
     const json = JSON.parse(text.substring(47, text.length - 2));
 
     const months = [], year2 = [], year3 = [], year4 = [];
+
+    function parseValue(cell) {
+      if (!cell || !cell.v) return null;
+      let val = cell.v.toString().replace(' MB','');
+      val = parseFloat(val);
+      if (isNaN(val)) return null;
+      return val ;
+    }
+
     json.table.rows.forEach(row => {
       const monthName = row.c[0]?.v || '';
-
-      const val2 = parseValue(row.c[2]);
-      const val3 = parseValue(row.c[3]);
-      const val4 = parseValue(row.c[4]);
+      const val2 = parseValue(row.c[17]);
+      const val3 = parseValue(row.c[18]);
+      const val4 = parseValue(row.c[19]);
 
       if (val2 !== null || val3 !== null || val4 !== null) {
         months.push(monthName);
-        year2.push(val2 !== null ? +val2.toFixed(2) : null);
-        year3.push(val3 !== null ? +val3.toFixed(2) : null);
-        year4.push(val4 !== null ? +val4.toFixed(2) : null);
+        year2.push(val2 !== null ? parseFloat(val2.toFixed(2)) : null);
+        year3.push(val3 !== null ? parseFloat(val3.toFixed(2)) : null);
+        year4.push(val4 !== null ? parseFloat(val4.toFixed(2)) : null);
       }
     });
 
-    clearChart("#stock-chart");
     renderStockChart(months, year2, year3, year4);
   } catch (err) {
     console.error("โหลดข้อมูล Stock ไม่สำเร็จ:", err);
@@ -216,9 +216,13 @@ function renderStockChart(months, year2, year3, year4) {
 }
 
 // ---- Tables ----
+function formatNumber(num) {
+  return Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 async function loadTables() {
   try {
-    const res = await fetch(API_URL_INVENTORY);
+    const res = await fetch(API_URL);
     const text = await res.text();
     const json = JSON.parse(text.substring(47, text.length - 2));
 
