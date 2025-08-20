@@ -4,12 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
-	<!-- Icon & Fonts -->
-	<link rel="icon" href="CRC_LogoEN.jpg" type="image/jpeg">
-	<link rel="apple-touch-icon" href="../img/CRC_LogoEN.jpg">
+<!-- Favicon for browser tab -->
+<link rel="icon" type="image/png" sizes="32x32" href="CRC_LogoEN.png">
+<link rel="icon" type="image/png" sizes="16x16" href="CRC_LogoEN.png">
 	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
 
-	<title>Product and Cost</title>
+	<title>Product Cost Comparison</title>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>	
@@ -23,7 +23,7 @@
 		<nav>
 			<form action="#">
 				<div class="form-group">
-					<h1 class="title">Product and Cost Report</h1>
+					<h1 class="title">Product Cost Comparison Report</h1>
 				</div>
 			</form>
 			<span class="divider"></span>
@@ -37,11 +37,28 @@
 		<main>
 			<div class="data">
 				<div class="content-data">
+					<h3>รายงานสินค้าเทียบต้นทุน</h3>
+				</div>
+			</div>
+			<!-- Cards -->
+			<div class="data">
+				<div class="content-data">
 					<div class="head"><h3>GI</h3></div>
 					<div class="stock-data" id="gi-chart"></div>
 				</div>
 				<div class="content-data">
 					<div class="head"><h3>RB-DB</h3></div>
+					<div class="chart" id="rbdb-chart"></div>
+				</div>
+			</div>
+
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>Back Steel</h3></div>
+					<div class="stock-data" id="back-steel-chart"></div>
+				</div>
+				<div class="content-data">
+					<div class="head"><h3></h3></div>
 					<div class="chart" id="rbdb-chart"></div>
 				</div>
 			</div>

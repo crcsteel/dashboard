@@ -121,8 +121,73 @@ function renderRBDBChart(rbdbData) {
   const chart = new ApexCharts(document.querySelector("#rbdb-chart"), options);
   chart.render();
 }
+// ---- Back Steel ----
+async function fetchBackSteelAndCost() {
+  try {
+    const res = await fetch(API_URL_PRODUCT);
+    const text = await res.text();
+    const json = JSON.parse(text.substring(47, text.length - 2));
+
+    const backsteelData = json.table.rows.map(row => ({
+      month: row.c[0]?.v || '',
+      BackSteel: toNumber(row.c[11]?.v),   
+      CostY1: toNumber(row.c[12]?.v),
+      CostY2: toNumber(row.c[13]?.v)
+    }));
+
+    renderBackSteelChart(backsteelData);
+  } catch (err) {
+    console.error("โหลดข้อมูลจากชีตไม่สำเร็จ (BackSteel):", err);
+  }
+}
+
+function renderBackSteelChart(backsteelData) {
+  const options = {
+    chart: { height: 500, type: 'line', stacked: false },
+    stroke: { width: [0, 3, 3] },
+    series: [
+      { name: 'Back Steel (ตัน)', type: 'column', data: backsteelData.map(d => d.BackSteel), yAxisIndex: 0 },
+      { name: 'ก.ค. 66 - มิ.ย. 67', type: 'line', data: backsteelData.map(d => d.CostY1), yAxisIndex: 1 },
+      { name: 'ก.ค. 67 - มิ.ย. 68', type: 'line', data: backsteelData.map(d => d.CostY2), yAxisIndex: 1 }
+    ],
+    colors: ['#1E90FF', '#FF6347', '#32CD32'],
+    xaxis: { categories: backsteelData.map(d => d.month) },   // ✅ แก้ตรงนี้
+    yaxis: [
+      {
+        title: { text: "Back Steel (ตัน)" },
+        labels: { formatter: val => val.toLocaleString() }
+      },
+      {
+        opposite: true,
+        title: { text: "Cost (บาท/กก.)" },
+        labels: { formatter: val => val.toFixed(2) }
+      }
+    ],
+    tooltip: {
+      shared: true,
+      intersect: false,
+      y: [
+        { formatter: val => val.toLocaleString() + " ตัน" },
+        { formatter: val => val.toFixed(2) + " บาท/กก." },
+        { formatter: val => val.toFixed(2) + " บาท/กก." }
+      ]
+    },
+    plotOptions: { bar: { columnWidth: '90%', borderRadius: 2 } },
+    dataLabels: {
+      enabled: true,
+      enabledOnSeries: [1, 2],
+      formatter: val => (val ? val.toFixed(2) : "")
+    },
+    grid: { borderColor: '#e0e0e0', strokeDashArray: 4 }
+  };
+
+  const chart = new ApexCharts(document.querySelector("#back-steel-chart"), options);
+  chart.render();
+}
+
 
 fetchGIAndCost();
 fetchRBDBAndCost();
+fetchBackSteelAndCost()
 
 // ---- Sales Daily ----
