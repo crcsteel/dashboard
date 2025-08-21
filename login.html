@@ -54,6 +54,7 @@
       // ตัวอย่าง: login สำเร็จถ้า username=admin, password=1234
       if (username === "admin" && password === "1234") {
         localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("loginTime", Date.now()); // เก็บเวลา login
         window.location.href = "backorderandcost.html"; 
       } else {
         document.getElementById("error").classList.remove("hidden");
