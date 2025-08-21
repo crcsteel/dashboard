@@ -113,7 +113,6 @@ function renderPOChart(months, year1, year2, year3, year4) {
 }
 
 // ---- Group Bar ----
-// ---- Group Bar ----
 async function fetchGroupData() {
   try {
     const res = await fetch(API_URL_INVENTORY);
@@ -149,7 +148,7 @@ function renderGroupBarChart(stockData) {
   const annotations = stockData.map(d => {
     return {
       x: d.group,
-      y: Math.max(d.Surin, d.Nangrong, d.DetUdom) + 5, // ยก label ขึ้นเหนือบาร์สูงสุดเล็กน้อย
+      y: Math.max(d.Surin, d.Nangrong, d.DetUdom) + 5,
       label: {
         text: `รวม: ${d.Total.toFixed(2)}`,
         style: {
@@ -163,7 +162,7 @@ function renderGroupBarChart(stockData) {
   });
 
   const options = {
-    chart: { type: 'bar', height: 500 },
+    chart: { type: 'bar', height: 400 },
     plotOptions: { bar: { columnWidth: '90%' } },
     series: [
       { name: 'สุรินทร์', data: stockData.map(d => parseFloat(d.Surin.toFixed(2))) },
@@ -174,15 +173,35 @@ function renderGroupBarChart(stockData) {
     xaxis: { categories: stockData.map(d => d.group) },
     dataLabels: {
       enabled: true,
-      formatter: val => val.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}),
+      formatter: val => val.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }),
       style: { fontSize: '10px', colors: ['#fff'] }
     },
-    annotations: { points: annotations },  // ✅ ใช้ points แทน texts
-    legend: { position: 'top', horizontalAlign: 'center' }
-  };
+    annotations: { points: annotations },
+    legend: { position: 'top', horizontalAlign: 'center' },
+
+    // ✅ Tooltip
+    tooltip: {
+      shared: true,
+      intersect: false,
+      y: {
+        formatter: function (val, opts) {
+          // ถ้า val เป็น null/undefined ไม่ต้องโชว์
+          if (val === undefined || val === null) return "";
+          return val.toLocaleString(
+            undefined,
+            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+          ) + " ตัน";
+        }
+      }
+    }
+  }; // <-- ปิด object options ตรงนี้
 
   new ApexCharts(document.querySelector("#group-bar-chart"), options).render();
 }
+
 
 
 

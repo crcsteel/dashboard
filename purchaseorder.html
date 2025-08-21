@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+<!-- Favicon for browser tab -->
+<link rel="icon" type="image/png" sizes="32x32" href="CRC_LogoEN.png">
+<link rel="icon" type="image/png" sizes="16x16" href="CRC_LogoEN.png">
+	<link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+
+	<title>Purchase Distribution</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>	
+	<!-- SIDEBAR -->
+	<div id="sidebar"></div>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<form action="#">
+				<div class="form-group">
+					<h1 class="title">Purchase Distribution Report</h1>
+				</div>
+			</form>
+			<span class="divider"></span>
+			<div class="profile">
+				<img src="https://crcsteel.co.th/upload-img/CRC_steel/logo_CRC_vdo-01_1665974907.png" alt="Logo">
+			</div>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="data">
+				<div class="content-data">
+					<h3>การวิเคราะห์ยอดซื้อเชิงปริมาณ</h3>
+				</div>
+			</div>
+			<!-- Cards -->
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>Purchase Value/Volume</h3></div>
+					<div class="stock-data" id="purchase-chart"></div>
+				</div>
+				<div class="content-data">
+					<div class="head"><h3>RB-DB</h3></div>
+					<div class="chart" id="#"></div>
+				</div>
+			</div>
+
+			<div class="data">
+				<div class="content-data">
+					<div class="head"><h3>Back Steel</h3></div>
+					<div class="stock-data" id="#"></div>
+				</div>
+				<div class="content-data">
+					<div class="head"><h3></h3></div>
+					<div class="chart" id="#"></div>
+				</div>
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+ <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- JavaScript -->
+<script src="script.js"></script>
+<script src="base.js"></script>
+<script src="inventory.js"></script>
+<script src="inventoryout.js"></script>
+<script src="salesandbase.js"></script>
+<script src="salesdaily.js"></script>
+<script src="purchaseorder.js"></script>
+
+
+
+  <script>
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => { document.getElementById("sidebar").innerHTML = html; })
+      .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
+  </script>
+</body>
+</html>

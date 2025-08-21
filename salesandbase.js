@@ -188,6 +188,6 @@ function renderBackSteelChart(backsteelData) {
 
 fetchGIAndCost();
 fetchRBDBAndCost();
-fetchBackSteelAndCost()
+fetchBackSteelAndCost();
 
 // ---- Sales Daily ----

@@ -8,7 +8,7 @@ const API_URL_INVENTORY_OUT = `https://docs.google.com/spreadsheets/d/${SHEET_ID
 const API_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tq=select V,W,X,Y limit 3 offset 0&sheet=inventory&tqx=out:json`;
 const API_URL_BASEPRICE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=baseprice&tqx=out:json`;
 const API_URL_BASEPRICE_INVENTORY = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tq=select A,B,C,D limit 10 offset 1&sheet=baseprice&tqx=out:json`;
-
+const API_URL_PURCHASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=purchaseorder&tqx=out:json`;
 
 // ---- Global Apex Style ----
 Apex.chart = { fontFamily: "'K2D', sans-serif" };
