@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Steel Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .login-card {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    .brand {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #1E3A8A;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="login-card">
+    <div class="brand">🔑 Steel Dashboard</div>
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Username</label>
+        <input type="text" id="username" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Password</label>
+        <input type="password" id="password" class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+      </div>
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">เข้าสู่ระบบ</button>
+    </form>
+    <p id="error" class="text-red-500 text-sm mt-3 hidden">❌ Username หรือ Password ไม่ถูกต้อง</p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // ตัวอย่าง: login สำเร็จถ้า username=admin, password=1234
+      if (username === "admin" && password === "1234") {
+        localStorage.setItem("loggedIn", "true");
+        window.location.href = "backorderandcost.html"; 
+      } else {
+        document.getElementById("error").classList.remove("hidden");
+      }
+    });
+  </script>
+</body>
+</html>

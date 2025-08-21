@@ -58,12 +58,26 @@
 <script src="inventoryout.js"></script>
 <script src="salesandbase.js"></script>
 <script src="salesdaily.js"></script>
+<script src="js/app.js"></script>
 
-  <script>
-    fetch("sidebar.html")
-      .then(res => res.text())
-      .then(html => { document.getElementById("sidebar").innerHTML = html; })
-      .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
-  </script>
+
+<script>
+  fetch("sidebar.html")
+    .then(res => res.text())
+    .then(html => { document.getElementById("sidebar").innerHTML = html; })
+    .catch(err => console.error("โหลด Sidebar ไม่ได้:", err));
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const loggedIn = localStorage.getItem("loggedIn");
+    if (!loggedIn) {
+      alert("กรุณาเข้าสู่ระบบก่อนเข้าหน้านี้");
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+
+
 </body>
 </html>
