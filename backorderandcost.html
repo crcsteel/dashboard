@@ -37,5 +37,27 @@
 
   <!-- Script -->
   <script src="app.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const loggedIn = localStorage.getItem("loggedIn");
+    const loginTime = localStorage.getItem("loginTime");
+
+    // ถ้าไม่เคย login -> เด้งกลับ
+    if (loggedIn !== "true" || !loginTime) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    // ถ้า login เกิน 1 ชั่วโมง -> หมดอายุ session
+    if (Date.now() - loginTime > 3600000) {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("loginTime");
+      alert("Session หมดอายุ กรุณา login ใหม่");
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+
 </body>
 </html>

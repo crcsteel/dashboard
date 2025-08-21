@@ -45,21 +45,21 @@
     <p id="error" class="text-red-500 text-sm mt-3 hidden">❌ Username หรือ Password ไม่ถูกต้อง</p>
   </div>
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-      // ตัวอย่าง: login สำเร็จถ้า username=admin, password=1234
-      if (username === "admin" && password === "1234") {
-        localStorage.setItem("loggedIn", "true");
-        localStorage.setItem("loginTime", Date.now()); // เก็บเวลา login
-        window.location.href = "backorderandcost.html"; 
-      } else {
-        document.getElementById("error").classList.remove("hidden");
-      }
-    });
-  </script>
+    if (username === "purchase" && password === "pur1234") {
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("loginTime", Date.now());
+      window.location.href = "backorderandcost.html";
+    } else {
+      document.getElementById("error").classList.remove("hidden");
+    }
+  });
+</script>
+
 </body>
 </html>

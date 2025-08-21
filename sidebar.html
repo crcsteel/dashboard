@@ -46,3 +46,17 @@
     </div>
   </div>
 </section>
+
+<li>
+  <a href="#" id="logoutBtn"><i class='bx bx-log-out icon'></i> Logout</a>
+</li>
+
+<script>
+  document.addEventListener("click", e => {
+    if (e.target.id === "logoutBtn") {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("loginTime");
+      window.location.href = "login.html";
+    }
+  });
+</script>
