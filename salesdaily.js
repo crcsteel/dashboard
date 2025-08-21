@@ -1,10 +1,28 @@
 // ฟังก์ชันฟอร์แมตตัวเลขเป็น #,###.00
-function formatNumber(num) {
+function formatInt(num) {
   return Number(num).toLocaleString('en-US', { 
-    minimumFractionDigits: 2, 
-    maximumFractionDigits: 2 
+    minimumFractionDigits: 0, 
+    maximumFractionDigits: 0 
   });
 }
+function formatDateDDMMYY(dateObj) {
+  if (!dateObj) return "";
+
+  // กรณี JSON ส่งมาเป็น {v: "Date(2025,7,1)"} 
+  // ต้อง parse ออกมาก่อน
+  if (typeof dateObj === "string" && dateObj.startsWith("Date(")) {
+    const parts = dateObj.match(/\d+/g).map(Number);
+    // parts = [2025,7,1]
+    const d = new Date(parts[0], parts[1], parts[2]);
+    return d.getDate(); // ✅ ได้เลขวัน เช่น 1
+  }
+
+  // ถ้ามาเป็น date ปกติ
+  const d = new Date(dateObj);
+  if (isNaN(d)) return dateObj;
+  return d.getDate();
+}
+
 // ---- Sales Daily ----
 async function fetchData() {
   try {
@@ -81,24 +99,34 @@ function renderChart(rows) {
       { name: 'รวม 3 สาขา', type: 'column', data: rows.map(r => r.total) }
     ],
     xaxis: { categories: rows.map(r => formatDateDDMMYY(r.date)) },
-    stroke: { curve: 'smooth', width: [3, 3, 3, 0] },
-    plotOptions: { bar: { columnWidth: '90%', borderRadius: 4 } },
-    markers: { size: 4 },
-    colors: ['#0080ffff', '#ff0000ff', '#06c000ff', '#ffeb376e'],
+    stroke: { curve: 'smooth', width: [2, 2, 2, 0] },
+    plotOptions: { bar: { columnWidth: '98%', borderRadius: 4 } },
+    markers: { size: 3 },
+    colors: ['#00B050', '#00B0F0', '#EC34DF', '#fff7b3ff'],
 
-    // ✅ เพิ่ม format tooltip/dataLabels
-    tooltip: {
-      y: {
-        formatter: val => formatNumber(val)
+    // ✅ format แกน Y
+    yaxis: {
+      labels: {
+        formatter: val => Number(val).toLocaleString('en-US', { 
+          minimumFractionDigits: 2, 
+          maximumFractionDigits: 2 
+        })
       }
     },
-    dataLabels: {
-      enabled: false, // ถ้าอยากเปิดให้เห็นค่าบนจุดก็ใส่ true
-      formatter: val => formatNumber(val)
+
+    tooltip: {
+      y: {
+        formatter: val => Number(val).toLocaleString('en-US', { 
+          minimumFractionDigits: 2, 
+          maximumFractionDigits: 2 
+        })
+      }
     }
   };
+
   new ApexCharts(document.querySelector("#sales-chart"), options).render();
 }
+
 
 
 fetchData();

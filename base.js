@@ -30,10 +30,11 @@ async function fetchAndRenderChart(labelMonthCol, labelWeekCol, startCol, target
     ],
     xaxis: { categories: labels, title: { text: 'เดือน-สัปดาห์' } },
     yaxis: { title: { text: title } },
-    stroke: { width: 3, curve: 'smooth' },
-    markers: { size: 4 },
+    stroke: { width: 2, curve: 'smooth' },
+    markers: { size: 3 },
     tooltip: { shared: true, intersect: false },
-    legend: { position: 'top' }
+    legend: { position: 'top' },
+    colors: ['#FFC000', '#00B050', '#00B0F0', '#EC34DF']
   };
 
   new ApexCharts(document.querySelector(targetId), options).render();
@@ -45,7 +46,7 @@ fetchAndRenderChart(5, 6, 7, "#base-rbdb-chart", "เบทราคาเหล
 // Base GI → col 12–17 (เดือน=12, สัปดาห์=13, ราคา=14–17)
 fetchAndRenderChart(12, 13, 14, "#base-gi-chart", "เบทราคาเหล็กท่อ (GI)");
 
-// Base Back Steel → col 19–24 (เดือน=19, สัปดาห์=20, ราคา=21–24)
+// Base Black Steel → col 19–24 (เดือน=19, สัปดาห์=20, ราคา=21–24)
 fetchAndRenderChart(19, 20, 21, "#base-backsteel-chart", "เบทราคาเหล็กท่อ (เหล็กดำ)");
 
 // Base C → col 26–31 (เดือน=26, สัปดาห์=27, ราคา=28–31)

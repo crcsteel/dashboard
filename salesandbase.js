@@ -1,3 +1,8 @@
+// ---- Helper ----
+function zeroToNull(val) {
+  return val === 0 ? null : val;
+}
+
 // ---- GI ----
 async function fetchGIAndCost() {
   try {
@@ -9,185 +14,113 @@ async function fetchGIAndCost() {
       month: row.c[0]?.v || '',
       GI: toNumber(row.c[1]?.v),
       CostY1: toNumber(row.c[2]?.v),
-      CostY2: toNumber(row.c[3]?.v)
+      CostY2: toNumber(row.c[3]?.v),
+      CostY3: toNumber(row.c[4]?.v)
     }));
-    renderGIChart(giData);
+    renderMultiChart("#gi-chart", "GI (ตัน)", giData, "GI", ["CostY1", "CostY2", "CostY3"]);
   } catch (err) {
     console.error("โหลดข้อมูลจากชีตไม่สำเร็จ (GI):", err);
   }
 }
-function renderGIChart(giData) {
-  const options = {
-    chart: { height: 500, type: 'line', stacked: false },
-    stroke: { width: [0, 3, 3] },
-    series: [
-      { name: 'GI (ตัน)', type: 'column', data: giData.map(d => d.GI) },
-      { name: 'ก.ค. 66 - มิ.ย. 67', type: 'line', data: giData.map(d => d.CostY1) },
-      { name: 'ก.ค. 67 - มิ.ย. 68', type: 'line', data: giData.map(d => d.CostY2) }
-    ],
-    colors: ['#1E90FF', '#FF6347', '#32CD32'],
-    xaxis: { categories: giData.map(d => d.month) },
-    yaxis: [
-      {
-        title: { text: "GI (ตัน)" },
-        labels: { formatter: val => val.toLocaleString() }
-      },
-      {
-        opposite: true,
-        title: { text: "Cost (บาท/กก.)" },
-        labels: { formatter: val => val.toFixed(2) }
-      }
-    ],
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: [
-        { formatter: val => val.toLocaleString() + " ตัน" },
-        { formatter: val => val.toFixed(2) + " บาท/กก." },
-        { formatter: val => val.toFixed(2) + " บาท/กก." }
-      ]
-    },
-    plotOptions: { bar: { columnWidth: '90%', borderRadius: 2 } },
-    dataLabels: {
-      enabled: true,
-      enabledOnSeries: [1, 2],
-      formatter: val => val.toFixed(2)
-    },
-    grid: { borderColor: '#e0e0e0', strokeDashArray: 4 }
-  };
 
-  const chart = new ApexCharts(document.querySelector("#gi-chart"), options);
-  chart.render();
-}
-
-// ---- RBDB ----
-async function fetchRBDBAndCost() {
+// ---- RB-DB ----
+async function fetchRBDbandCost() {
   try {
     const res = await fetch(API_URL_PRODUCT);
     const text = await res.text();
     const json = JSON.parse(text.substring(47, text.length - 2));
 
-    const bdbData = json.table.rows.map(row => ({
+    const rbdbData = json.table.rows.map(row => ({
       month: row.c[0]?.v || '',
-      RBDB: toNumber(row.c[6]?.v),   // สมมติ RBDB เริ่ม col 6
+      RBDB: toNumber(row.c[6]?.v),
       CostY1: toNumber(row.c[7]?.v),
-      CostY2: toNumber(row.c[8]?.v)
+      CostY2: toNumber(row.c[8]?.v),
+      CostY3: toNumber(row.c[9]?.v)
     }));
-    renderRBDBChart(bdbData);
+    renderMultiChart("#rbdb-chart", "RB-DB (ตัน)", rbdbData, "RBDB", ["CostY1", "CostY2", "CostY3"]);
   } catch (err) {
-    console.error("โหลดข้อมูลจากชีตไม่สำเร็จ (RBDB):", err);
+    console.error("โหลดข้อมูลจากชีตไม่สำเร็จ (RB-DB):", err);
   }
 }
-function renderRBDBChart(rbdbData) {
-  const options = {
-    chart: { height: 500, type: 'line', stacked: false },
-    stroke: { width: [0, 3, 3] },
-    series: [
-      { name: 'RBDB (ตัน)', type: 'column', data: rbdbData.map(d => d.RBDB) },
-      { name: 'ก.ค. 66 - มิ.ย. 67', type: 'line', data: rbdbData.map(d => d.CostY1) },
-      { name: 'ก.ค. 67 - มิ.ย. 68', type: 'line', data: rbdbData.map(d => d.CostY2) }
-    ],
-    colors: ['#1E90FF', '#FF6347', '#32CD32'], // เปลี่ยนสีให้ต่างจาก GI
-    xaxis: { categories: rbdbData.map(d => d.month) },
-    yaxis: [
-      {
-        title: { text: "RBDB (ตัน)" },
-        labels: { formatter: val => val.toLocaleString() }
-      },
-      {
-        opposite: true,
-        title: { text: "Cost (บาท/กก.)" },
-        labels: { formatter: val => val.toFixed(2) }
-      }
-    ],
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: [
-        { formatter: val => val.toLocaleString() + " ตัน" },
-        { formatter: val => val.toFixed(2) + " บาท/กก." },
-        { formatter: val => val.toFixed(2) + " บาท/กก." }
-      ]
-    },
-    plotOptions: { bar: { columnWidth: '90%', borderRadius: 2 } },
-    dataLabels: {
-      enabled: true,
-      enabledOnSeries: [1, 2],
-      formatter: val => val.toFixed(2)
-    },
-    grid: { borderColor: '#e0e0e0', strokeDashArray: 4 }
-  };
 
-  const chart = new ApexCharts(document.querySelector("#rbdb-chart"), options);
-  chart.render();
-}
-// ---- Back Steel ----
-async function fetchBackSteelAndCost() {
+// ---- Black Steel ----
+async function fetchBlackSteelAndCost() {
   try {
     const res = await fetch(API_URL_PRODUCT);
     const text = await res.text();
     const json = JSON.parse(text.substring(47, text.length - 2));
 
-    const backsteelData = json.table.rows.map(row => ({
+    const bsData = json.table.rows.map(row => ({
       month: row.c[0]?.v || '',
-      BackSteel: toNumber(row.c[11]?.v),   
+      BS: toNumber(row.c[11]?.v),
       CostY1: toNumber(row.c[12]?.v),
-      CostY2: toNumber(row.c[13]?.v)
+      CostY2: toNumber(row.c[13]?.v),
+      CostY3: toNumber(row.c[14]?.v)
     }));
-
-    renderBackSteelChart(backsteelData);
+    renderMultiChart("#bs-chart", "Black Steel (ตัน)", bsData, "BS", ["CostY1", "CostY2", "CostY3"]);
   } catch (err) {
-    console.error("โหลดข้อมูลจากชีตไม่สำเร็จ (BackSteel):", err);
+    console.error("โหลดข้อมูลจากชีตไม่สำเร็จ (Black Steel):", err);
   }
 }
 
-function renderBackSteelChart(backsteelData) {
+// ---- Render Generic ----
+function renderMultiChart(targetId, title, data, mainKey, costKeys) {
   const options = {
     chart: { height: 500, type: 'line', stacked: false },
-    stroke: { width: [0, 3, 3] },
+    stroke: { width: [0, 3, 3, 3] },
     series: [
-      { name: 'Back Steel (ตัน)', type: 'column', data: backsteelData.map(d => d.BackSteel), yAxisIndex: 0 },
-      { name: 'ก.ค. 66 - มิ.ย. 67', type: 'line', data: backsteelData.map(d => d.CostY1), yAxisIndex: 1 },
-      { name: 'ก.ค. 67 - มิ.ย. 68', type: 'line', data: backsteelData.map(d => d.CostY2), yAxisIndex: 1 }
+      { name: title, type: 'column', data: data.map(d => zeroToNull(d[mainKey])) },
+      { name: '2566', type: 'line', data: data.map(d => zeroToNull(d[costKeys[0]])) },
+      { name: '2567', type: 'line', data: data.map(d => zeroToNull(d[costKeys[1]])) },
+      { name: '2568', type: 'line', data: data.map(d => zeroToNull(d[costKeys[2]])) }
     ],
-    colors: ['#1E90FF', '#FF6347', '#32CD32'],
-    xaxis: { categories: backsteelData.map(d => d.month) },   // ✅ แก้ตรงนี้
+    colors: ['#ff5858ff', '#FFC000', '#00B050', '#00B0F0'],
+    xaxis: { categories: data.map(d => d.month) },
     yaxis: [
       {
-        title: { text: "Back Steel (ตัน)" },
-        labels: { formatter: val => val.toLocaleString() }
+        title: { text: title },
+        labels: {
+          formatter: val => Number(val).toLocaleString('en-US', {
+            minimumFractionDigits: 0, maximumFractionDigits: 0
+          })
+        }
       },
       {
         opposite: true,
         title: { text: "Cost (บาท/กก.)" },
-        labels: { formatter: val => val.toFixed(2) }
+        labels: {
+          formatter: val => Number(val).toLocaleString('en-US', {
+            minimumFractionDigits: 2, maximumFractionDigits: 2
+          })
+        }
       }
     ],
     tooltip: {
       shared: true,
       intersect: false,
       y: [
-        { formatter: val => val.toLocaleString() + " ตัน" },
-        { formatter: val => val.toFixed(2) + " บาท/กก." },
-        { formatter: val => val.toFixed(2) + " บาท/กก." }
+        { formatter: val => val ? Number(val).toLocaleString('en-US') + " ตัน" : "" },
+        { formatter: val => val ? Number(val).toFixed(2) + " บาท/กก." : "" },
+        { formatter: val => val ? Number(val).toFixed(2) + " บาท/กก." : "" },
+        { formatter: val => val ? Number(val).toFixed(2) + " บาท/กก." : "" }
       ]
     },
     plotOptions: { bar: { columnWidth: '90%', borderRadius: 2 } },
     dataLabels: {
       enabled: true,
-      enabledOnSeries: [1, 2],
-      formatter: val => (val ? val.toFixed(2) : "")
+      enabledOnSeries: [1, 2, 3],
+      formatter: val => val ? Number(val).toFixed(2) : ""
     },
     grid: { borderColor: '#e0e0e0', strokeDashArray: 4 }
   };
 
-  const chart = new ApexCharts(document.querySelector("#back-steel-chart"), options);
+  const chart = new ApexCharts(document.querySelector(targetId), options);
   chart.render();
 }
 
 
 fetchGIAndCost();
-fetchRBDBAndCost();
-fetchBackSteelAndCost();
+fetchRBDbandCost();
+fetchBlackSteelAndCost();
 
 // ---- Sales Daily ----

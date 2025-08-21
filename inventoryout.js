@@ -46,7 +46,7 @@ async function fetchAndRenderInventoryOutChart(targetId, startCol, yTitle, unit 
       ],
       xaxis: { categories: months },
       stroke: { width: 3, curve: 'smooth' },
-      colors: ['#1E90FF', '#FF6347', '#32CD32', '#8A2BE2'],
+      colors: ['#FFC000', '#00B050', '#00B0F0', '#EC34DF'],
       yaxis: {
         labels: { formatter: val => val.toFixed(2) },
         title: { text: yTitle }
@@ -73,8 +73,8 @@ async function fetchAllInventoryOutData() {
       fetchAndRenderInventoryOutChart("#inventory-out-gi-chart",    13, "ปริมาณ (ตัน)", "ตัน"),
       fetchAndRenderInventoryOutChart("#inventory-out-rbdb-chart",  13, "ปริมาณ (ตัน)", "ตัน"),
       fetchAndRenderInventoryOutChart("#inventory-out-ton-chart",   13, "ปริมาณ (ตัน)", "ตัน"),
-      fetchAndRenderInventoryOutChart("#inventory-out-bath-chart",  13, "ปริมาณ (ล้านบาท)", "MB"),
-      fetchAndRenderInventoryOutChart("#inventory-out-backsteel-chart", 13, "ปริมาณ (ล้านบาท)", "MB"),
+      fetchAndRenderInventoryOutChart("#inventory-out-bath-chart",  13, "ปริมาณ (ตัน)", "ตัน"),
+      fetchAndRenderInventoryOutChart("#inventory-out-backsteel-chart", 13, "ปริมาณ (ตัน)", "ตัน"),
     ]);
     console.log("✅ โหลดข้อมูล Inventory Out ครบแล้ว");
   } catch (err) {

@@ -52,7 +52,7 @@ function renderInventoryChart(months, year1, year2, year3, year4) {
     ],
     xaxis: { categories: months },
     stroke: { width: 3, curve: 'smooth' },
-    colors: ['#1E90FF', '#FF6347', '#32CD32', '#8A2BE2']
+    colors: ['#FFC000', '#00B050', '#00B0F0', '#EC34DF']
   };
   new ApexCharts(document.querySelector("#inventory-chart"), options).render();
 }
@@ -107,7 +107,7 @@ function renderPOChart(months, year1, year2, year3, year4) {
     ],
     xaxis: { categories: months },
     stroke: { width: 3, curve: 'smooth' },
-    colors: ['#1E90FF', '#FF6347', '#32CD32', '#8A2BE2']
+    colors: ['#FFC000', '#00B050', '#00B0F0', '#EC34DF']
   };
   new ApexCharts(document.querySelector("#po-chart"), options).render();
 }
@@ -169,7 +169,7 @@ function renderGroupBarChart(stockData) {
       { name: 'นางรอง', data: stockData.map(d => parseFloat(d.Nangrong.toFixed(2))) },
       { name: 'เดชอุดม', data: stockData.map(d => parseFloat(d.DetUdom.toFixed(2))) }
     ],
-    colors: ["#0080ff", "#ff0000", "#06c000"],
+    colors: ["#00B0F0", "#EC34DF", "#00B050"],
     xaxis: { categories: stockData.map(d => d.group) },
     dataLabels: {
       enabled: true,
@@ -252,7 +252,7 @@ function renderStockChart(months, year2, year3, year4) {
     ],
     xaxis: { categories: months },
     stroke: { width: 3, curve: 'smooth' },
-    colors: ['#FF6347', '#32CD32', '#8A2BE2']
+    colors: ['#00B050', '#00B0F0', '#EC34DF']
   };
   new ApexCharts(document.querySelector("#stock-chart"), options).render();
 }
