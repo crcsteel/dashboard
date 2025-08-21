@@ -35,6 +35,9 @@ async function fetchAndRenderInventoryOutChart(targetId, startCol, yTitle, unit 
       }
     });
 
+    // --- ตรวจว่ากราฟนี้คือมูลค่าบาทหรือไม่ ---
+    const isBathChart = targetId.includes("bath");
+
     // --- Render Chart ---
     const options = {
       chart: { type: 'line', height: 400, toolbar: { show: true } },
@@ -48,12 +51,25 @@ async function fetchAndRenderInventoryOutChart(targetId, startCol, yTitle, unit 
       stroke: { width: 3, curve: 'smooth' },
       colors: ['#FFC000', '#00B050', '#00B0F0', '#EC34DF'],
       yaxis: {
-        labels: { formatter: val => val.toFixed(2) },
+        labels: {
+          formatter: val => {
+            if (isBathChart) {
+              return (val / 1_000_000).toFixed(0) + " MB";  // ✅ 10,000,000 → 10 MB
+            }
+            return val.toFixed(2);
+          }
+        },
         title: { text: yTitle }
       },
       tooltip: {
         y: {
-          formatter: val => (val ? val.toLocaleString() : "-") + " " + unit
+          formatter: val => {
+            if (!val) return "-";
+            if (isBathChart) {
+              return (val / 1_000_000).toFixed(2) + " MB"; // ✅ แสดงทศนิยม เช่น 10.25 MB
+            }
+            return val.toLocaleString() + " " + unit;
+          }
         }
       }
     };
@@ -66,21 +82,29 @@ async function fetchAndRenderInventoryOutChart(targetId, startCol, yTitle, unit 
   }
 }
 
+
 // --- โหลดข้อมูลพร้อมกัน ---
 async function fetchAllInventoryOutData() {
   try {
     await Promise.all([
-      fetchAndRenderInventoryOutChart("#inventory-out-gi-chart",    13, "ปริมาณ (ตัน)", "ตัน"),
-      fetchAndRenderInventoryOutChart("#inventory-out-rbdb-chart",  13, "ปริมาณ (ตัน)", "ตัน"),
-      fetchAndRenderInventoryOutChart("#inventory-out-ton-chart",   13, "ปริมาณ (ตัน)", "ตัน"),
-      fetchAndRenderInventoryOutChart("#inventory-out-bath-chart",  13, "ปริมาณ (ตัน)", "ตัน"),
-      fetchAndRenderInventoryOutChart("#inventory-out-backsteel-chart", 13, "ปริมาณ (ตัน)", "ตัน"),
+
+      fetchAndRenderInventoryOutChart("#inventory-out-ton-chart", 1, "ปริมาณ (ตัน)", "ตัน"),
+
+      fetchAndRenderInventoryOutChart("#inventory-out-bath-chart", 7, "มูลค่า (บาท)", "บาท"),
+
+      fetchAndRenderInventoryOutChart("#inventory-out-rbdb-chart", 13, "ปริมาณ (ตัน)", "ตัน"),
+
+      fetchAndRenderInventoryOutChart("#inventory-out-gi-chart", 19, "ปริมาณ (ตัน)", "ตัน"),
+
+      fetchAndRenderInventoryOutChart("#inventory-out-backsteel-chart", 25, "ปริมาณ (ตัน)", "ตัน")
     ]);
+
     console.log("✅ โหลดข้อมูล Inventory Out ครบแล้ว");
   } catch (err) {
     console.error("❌ โหลดข้อมูล Inventory Out บางส่วนไม่สำเร็จ:", err);
   }
 }
+
 
 // --- Run ---
 fetchAllInventoryOutData();
